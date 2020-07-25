@@ -11,29 +11,38 @@ Globals:
     Timeout: 3
 
 Resources:
-  # ApiGatewayApi:
-  #   Type: AWS::Serverless::Api
-  #   Properties:
-  #     StageName: prod
-  #   Domain:
-  #     DomainName: pets.soe.dpe-au.io
-  #     CertificateArn: arn:aws:acm:ap-southeast-2:711302956447:certificate/07747f4a-3afc-4968-ab66-1ee3c9fbe9b4
-  #     EndpointConfiguration: EDGE
-  #     Route53:
-  #       # soe.dpe-au.io
-  #       HostedZoneId: Z1XBVN3ZNM04WJ
+  PetsTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties: 
+      TableName: pets
+
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: "'OPTIONS,POST'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
   PetsFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: src/
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName:
+              !GetAtt PetsTable.Arn
+        - RekognitionDetectOnlyPolicy: {}
       Events:
         Pets:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /pets
             Method: post
+            RestApiId:
+              Ref: ApiGatewayApi
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
@@ -41,7 +50,7 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   PetsApi:
     Description: "API Gateway endpoint URL for Prod stage for Pets function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/pets/"
+    Value: !Sub "https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/pets/"
   PetsFunction:
     Description: "Pets Lambda Function ARN"
     Value: !GetAtt PetsFunction.Arn

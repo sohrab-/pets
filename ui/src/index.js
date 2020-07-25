@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { ThemeProvider } from "emotion-theming";
 import theme from "@rebass/preset";
 import "./index.css";
-import App from "./App";
+import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(

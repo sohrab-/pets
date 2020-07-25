@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Box, Button } from "rebass";
 import { Label, Input } from "@rebass/forms";
-import "./App.css";
 
 // which demo session the data are for?
 const demoSession = process.env.REACT_APP_DEMO_SESSION;
@@ -14,7 +13,7 @@ const getFile = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-function App() {
+const Home = () => {
   const [pet, setPet] = useState("cat");
   const imageRef = useRef();
 
@@ -54,6 +53,6 @@ function App() {
       </Box>
     </Box>
   );
-}
+};
 
-export default App;
+export default Home;

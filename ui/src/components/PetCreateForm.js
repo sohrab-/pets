@@ -1,19 +1,21 @@
 import React, { useState, useRef } from "react";
+import PropTypes from 'prop-types';
 import { Box, Button } from "rebass";
 import { Label, Input } from "@rebass/forms";
+import { useHistory } from "react-router-dom";
 
-// which demo session the data are for?
-const demoSession = process.env.REACT_APP_DEMO_SESSION;
-
-const getFile = (file) =>
-  new Promise((resolve, reject) => {
+function getFile(file) {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
+}
 
-const Home = () => {
+function PetCreateForm({ createPet }) {
+  const history = useHistory();
+
   const [pet, setPet] = useState("cat");
   const imageRef = useRef();
 
@@ -25,11 +27,9 @@ const Home = () => {
       image = await getFile(imageRef.current.files[0]);
     }
 
-    fetch("/pets", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pet, image, demoSession }),
-    });
+    // TODO handle errors
+    await createPet({ name: pet, image });
+    history.push('/results');
   };
 
   return (
@@ -53,6 +53,10 @@ const Home = () => {
       </Box>
     </Box>
   );
-};
+}
 
-export default Home;
+PetCreateForm.propTypes = {
+  createPet: PropTypes.func.isRequired,
+}
+
+export default PetCreateForm

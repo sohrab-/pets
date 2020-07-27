@@ -16,7 +16,7 @@ function getFile(file) {
 function PetCreateForm({ createPet }) {
   const history = useHistory();
 
-  const [pet, setPet] = useState("cat");
+  const [type, setType] = useState("cat");
   const imageRef = useRef();
 
   const onSubmit = async (event) => {
@@ -28,7 +28,7 @@ function PetCreateForm({ createPet }) {
     }
 
     // TODO handle errors
-    await createPet({ pet, image });
+    await createPet({ type, image });
     history.push('/results');
   };
 
@@ -36,12 +36,12 @@ function PetCreateForm({ createPet }) {
     // TODO replace with icon buttons
     <Box as="form" onSubmit={onSubmit} py={3}>
       <Box width={1} px={2}>
-        <Label htmlFor="pet">Pet</Label>
+        <Label htmlFor="type">Type</Label>
         <Input
-          id="pet"
-          name="pet"
-          value={pet}
-          onChange={(e) => setPet(e.target.value)}
+          id="type"
+          name="type"
+          value={type}
+          onChange={(e) => setType(e.target.value)}
         />
       </Box>
       <Box width={1} px={2}>

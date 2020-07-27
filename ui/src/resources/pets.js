@@ -9,9 +9,9 @@ export function usePets() {
 }
 
 export function useCreatePet() {
-  return useMutation(({ pet, image }) => request('pets', {
+  return useMutation(({ type, image }) => request('pets', {
     method: 'POST',
-    body: { pet, image }
+    body: { type, image }
   }, {
     onSuccess: () => queryCache.invalidateQueries('pets')
   }));

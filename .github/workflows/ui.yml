@@ -8,9 +8,19 @@ on:
     branches: [ master ]
     paths:
       - 'ui/*'
+  workflow_dispatch:
+    inputs:
+      demoSession:
+        description: 'Demo Session'
+        required: true
+        default: 'test'
 # TODO
 #   pull_request:
 #     branches: [ master ]
+
+defaults:
+  run:
+    working-directory: ui
 
 jobs:
   build:
@@ -23,6 +33,12 @@ jobs:
       with:
         node-version: 12.x
     - uses: chrislennon/action-aws-cli@v1.1
+    # TODO update
+    - run: >
+        echo '
+        REACT_APP_DEMO_SESSION=${{ github.event.inputs.demoSession }}
+        REACT_APP_API_BASE_URL=http://localhost:3000
+        ' > .env
     - run: npm ci
     - run: npm run build
     - run: npm run deploy

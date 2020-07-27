@@ -1,20 +1,22 @@
 import React, { useState, useRef } from "react";
+import PropTypes from 'prop-types';
 import { Box, Button } from "rebass";
 import { Label, Input } from "@rebass/forms";
+import { useHistory } from "react-router-dom";
 
-// which demo session the data are for?
-const demoSession = process.env.REACT_APP_DEMO_SESSION;
-
-const getFile = (file) =>
-  new Promise((resolve, reject) => {
+function getFile(file) {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
+}
 
-const Home = () => {
-  const [pet, setPet] = useState("cat");
+function PetCreateForm({ createPet }) {
+  const history = useHistory();
+
+  const [type, setType] = useState("cat");
   const imageRef = useRef();
 
   const onSubmit = async (event) => {
@@ -25,23 +27,21 @@ const Home = () => {
       image = await getFile(imageRef.current.files[0]);
     }
 
-    fetch("/pets", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pet, image, demoSession }),
-    });
+    // TODO handle errors
+    await createPet({ type, image });
+    history.push('/results');
   };
 
   return (
     // TODO replace with icon buttons
     <Box as="form" onSubmit={onSubmit} py={3}>
       <Box width={1} px={2}>
-        <Label htmlFor="pet">Pet</Label>
+        <Label htmlFor="type">Type</Label>
         <Input
-          id="pet"
-          name="pet"
-          value={pet}
-          onChange={(e) => setPet(e.target.value)}
+          id="type"
+          name="type"
+          value={type}
+          onChange={(e) => setType(e.target.value)}
         />
       </Box>
       <Box width={1} px={2}>
@@ -53,6 +53,10 @@ const Home = () => {
       </Box>
     </Box>
   );
-};
+}
 
-export default Home;
+PetCreateForm.propTypes = {
+  createPet: PropTypes.func.isRequired,
+}
+
+export default PetCreateForm

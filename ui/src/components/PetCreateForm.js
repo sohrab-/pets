@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { Box, Button } from "rebass";
 import { Label, Input } from "@rebass/forms";
 import { useHistory } from "react-router-dom";
@@ -29,7 +29,7 @@ function PetCreateForm({ createPet }) {
 
     // TODO handle errors
     await createPet({ type, image });
-    history.push('/results');
+    history.push("/results");
   };
 
   return (
@@ -57,6 +57,6 @@ function PetCreateForm({ createPet }) {
 
 PetCreateForm.propTypes = {
   createPet: PropTypes.func.isRequired,
-}
+};
 
-export default PetCreateForm
+export default PetCreateForm;

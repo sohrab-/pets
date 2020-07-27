@@ -1,24 +1,32 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: >
-  lambda
-
-  Sample SAM Template for lambda
+Description: Pe.ts lambda
   
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 10
 
+Parameters: 
+  TableName: 
+    Type: String
+    Default: pets
+  ImageBucketName:
+    Type: String
+    Default: pets-soe-dpe-au-images
+
 Resources:
   PetsTable:
     Type: AWS::Serverless::SimpleTable
     Properties: 
-      TableName: pets
+      TableName:
+        Ref: TableName
+
   PetsS3Bucket:
     Type: AWS::S3::Bucket
     Properties: 
-      BucketName: pets-soe-dpe-au-images
+      BucketName:
+        Ref: ImageBucketName
 
   ApiGatewayApi:
     Type: AWS::Serverless::Api
@@ -28,12 +36,19 @@ Resources:
         AllowMethods: "'OPTIONS,POST'"
         AllowHeaders: "'*'"
         AllowOrigin: "'*'"
+
   PetsFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: src/
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
+      Environment:
+        Variables:
+          DB_TABLE:
+            Ref: TableName
+          IMAGE_BUCKET:
+            Ref: ImageBucketName
       Policies:
         - DynamoDBCrudPolicy:
             TableName:

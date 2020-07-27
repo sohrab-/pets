@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import Main from '../layouts/Main';
+import Main from "../layouts/Main";
 
 function About() {
   return (
@@ -10,4 +10,4 @@ function About() {
   );
 }
 
-export default About
+export default About;

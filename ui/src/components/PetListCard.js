@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Card, Box, Image, Heading } from 'rebass'
 
-function PetListCard({ id, image, name }) {
+function PetListCard({ id, image, pet }) {
   return (
     <Box m={15}>
       <Card width={[256, 320]}>
         <Image src={image}/>
-        <Heading>{name}</Heading>
+        <Heading>{pet}</Heading>
       </Card>
     </Box>
   )
@@ -15,7 +15,7 @@ function PetListCard({ id, image, name }) {
 
 PetListCard.propTypes = {
   id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  pet: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
 }
 

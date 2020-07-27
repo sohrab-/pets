@@ -11,7 +11,7 @@ function PetList({ pets = [] }) {
         <PetListCard
           key={pet.id}
           id={pet.id}
-          name={pet.name}
+          pet={pet.pet}
           image={pet.image} 
         />
       )}

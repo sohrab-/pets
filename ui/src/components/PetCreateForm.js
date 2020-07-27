@@ -28,7 +28,7 @@ function PetCreateForm({ createPet }) {
     }
 
     // TODO handle errors
-    await createPet({ name: pet, image });
+    await createPet({ pet, image });
     history.push('/results');
   };
 

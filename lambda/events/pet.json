@@ -1,5 +1,5 @@
 {
-  "body": "{\"pet\":\"cat\",\"image\":null,\"demoSession\":\"test\"}",
+  "body": "{\"type\":\"cat\",\"image\":null,\"demoSession\":\"test\"}",
   "resource": "/{proxy+}",
   "path": "/pets",
   "httpMethod": "POST",

@@ -13,7 +13,7 @@ Parameters:
     Default: pets
   ImageBucketName:
     Type: String
-    Default: pets-soe-dpe-au-images
+    Default: pets.soe.dpe-au.io-images
 
 Resources:
   PetsTable:

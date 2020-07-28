@@ -45,8 +45,6 @@ jobs:
           REACT_APP_DEMO_SESSION=$DEMO_SESSION
           REACT_APP_API_BASE_URL=$API_BASE_URL
         EOF
-    # TODO remove
-    - run: cat .env
     - run: npm ci
     - run: npm run build
     - run: npm run deploy

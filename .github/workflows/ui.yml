@@ -18,6 +18,11 @@ on:
 #   pull_request:
 #     branches: [ master ]
 
+# TODO update
+env:
+  DEMO_SESSION: ${{ github.event.inputs.demoSession || 'test' }}
+  API_BASE_URL: 'http://localhost:3000'
+
 defaults:
   run:
     working-directory: ui
@@ -32,13 +37,16 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - uses: chrislennon/action-aws-cli@v1.1
-    # TODO update
-    - run: >
-        echo '
-        REACT_APP_DEMO_SESSION=${{ github.event.inputs.demoSession }}
-        REACT_APP_API_BASE_URL=http://localhost:3000
-        ' > .env
+    - name: Install AWS CLI
+      uses: chrislennon/action-aws-cli@v1.1
+    - name: Setup .env
+      run: |
+        cat <<- EOF > .env
+          REACT_APP_DEMO_SESSION=$DEMO_SESSION
+          REACT_APP_API_BASE_URL=$API_BASE_URL
+        EOF
+    # TODO remove
+    - run: cat .env
     - run: npm ci
     - run: npm run build
     - run: npm run deploy

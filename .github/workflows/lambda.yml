@@ -8,6 +8,7 @@ on:
     branches: [ master ]
     paths:
       - 'lambda/*'
+  workflow_dispatch: {}
 # TODO
 #   pull_request:
 #     branches: [ master ]
@@ -34,7 +35,7 @@ jobs:
     - name: Install HomeBrew (needed for AWS SAM installation) 
       run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     - name: Install AWS SAM
-      run: >
+      run: |
         /home/linuxbrew/.linuxbrew/bin/brew tap aws/tap
         /home/linuxbrew/.linuxbrew/bin/brew install aws-sam-cli
     - run: sam build

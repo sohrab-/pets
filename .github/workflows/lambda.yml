@@ -1,0 +1,41 @@
+# This workflow will do a AWS SAM build and deploy
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Deploy Lambda 
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'lambda/*'
+# TODO
+#   pull_request:
+#     branches: [ master ]
+
+env:
+  AWS_DEFAULT_REGION: ap-southeast-2
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+defaults:
+  run:
+    working-directory: lambda
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: Install HomeBrew (needed for AWS SAM installation) 
+      run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    - name: Install AWS SAM
+      run: >
+        /home/linuxbrew/.linuxbrew/bin/brew tap aws/tap
+        /home/linuxbrew/.linuxbrew/bin/brew install aws-sam-cli
+    - run: sam build
+    - run: sam deploy --no-confirm-changeset

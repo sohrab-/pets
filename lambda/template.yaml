@@ -51,11 +51,9 @@ Resources:
             Ref: ImageBucketName
       Policies:
         - DynamoDBCrudPolicy:
-            TableName:
-              !GetAtt PetsTable.Arn
+            TableName: !Ref PetsTable
         - S3CrudPolicy:
-            BucketName: 
-              !GetAtt PetsS3Bucket.Arn
+            BucketName: !Ref PetsS3Bucket
         - RekognitionDetectOnlyPolicy: {}
       Events:
         Pets:

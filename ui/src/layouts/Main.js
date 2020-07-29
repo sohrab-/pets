@@ -1,13 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Box } from "rebass";
+import { Flex } from "rebass";
 import TopBar from "../components/TopBar";
 
 function Main({ children }) {
   return (
     <>
       <TopBar />
-      <Box>{children}</Box>
+      <Flex p={10} alignItems="center">
+        {children}
+      </Flex>
     </>
   );
 }

@@ -53,24 +53,25 @@ const uploadImageToS3 = async (key, buffer) => {
 };
 
 const insertIntoDynamo = async (event, id, type, imageFilename) => {
+  var client = null;
+
+  if (event.headers["CloudFront-Is-SmartTV-Viewer"] === "true") {
+    client = "smartTV";
+  } else if (event.headers["CloudFront-Is-Tablet-Viewer"] === "true") {
+    client = "tablet";
+  } else if (event.headers["CloudFront-Is-Mobile-Viewer"] === "true") {
+    client = "mobile";
+  } else if (event.headers["CloudFront-Is-Desktop-Viewer"] === "true") {
+    client = "desktop";
+  }
+
   const item = {
     id: { S: id },
     type: { S: type },
     demoSession: { S: event.headers["X-Demo-Session"] },
     imageFilename: { S: imageFilename },
     userAgent: { S: event.headers["User-Agent"] },
-    desktopClient: {
-      BOOL: event.headers["CloudFront-Is-Desktop-Viewer"] === "true",
-    },
-    mobileClient: {
-      BOOL: event.headers["CloudFront-Is-Mobile-Viewer"] === "true",
-    },
-    smartTvClient: {
-      BOOL: event.headers["CloudFront-Is-SmartTV-Viewer"] === "true",
-    },
-    tabletClient: {
-      BOOL: event.headers["CloudFront-Is-Tablet-Viewer"] === "true",
-    },
+    client: { S: client },
     country: { S: event.headers["CloudFront-Viewer-Country"] },
     // TODO any other useful info that can be gleaned?
   };

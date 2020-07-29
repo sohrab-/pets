@@ -1,11 +1,18 @@
 export default async function request(
   path,
-  { headers = {}, params = {}, body = undefined, ...options } = {}
+  {
+    method = "get",
+    headers = {},
+    params = {},
+    body = undefined,
+    ...options
+  } = {}
 ) {
   const url = new URL(`${process.env.REACT_APP_API_BASE_URL}/${path}`);
   url.search = new URLSearchParams(params).toString();
 
   const response = await fetch(url, {
+    method,
     headers: {
       "Content-Type": "application/json",
       // I prefer this over sending it in the body.

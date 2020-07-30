@@ -1,10 +1,6 @@
 const { DynamoDB, Rekognition, S3 } = require("aws-sdk");
 const { v4: uuidv4 } = require("uuid");
 
-const db = new DynamoDB({ apiVersion: "2012-08-10" });
-const s3 = new S3();
-const rekognition = new Rekognition();
-
 const supportedPets = [
   "cat",
   "dog",
@@ -19,6 +15,10 @@ const supportedPets = [
 
 const tableName = process.env.DB_TABLE;
 const bucketName = process.env.IMAGE_BUCKET;
+
+const db = new DynamoDB.DocumentClient();
+const s3 = new S3();
+const rekognition = new Rekognition();
 
 const rekognizeLabels = async (imageBytes) => {
   const params = {
@@ -53,8 +53,7 @@ const uploadImageToS3 = async (key, buffer) => {
 };
 
 const insertIntoDynamo = async (event, id, type, imageFilename) => {
-  var client = null;
-
+  let client = null;
   if (event.headers["CloudFront-Is-SmartTV-Viewer"] === "true") {
     client = "smartTV";
   } else if (event.headers["CloudFront-Is-Tablet-Viewer"] === "true") {
@@ -66,29 +65,18 @@ const insertIntoDynamo = async (event, id, type, imageFilename) => {
   }
 
   const item = {
-    id: { S: id },
-    type: { S: type },
-    demoSession: { S: event.headers["X-Demo-Session"] },
-    imageFilename: { S: imageFilename },
-    userAgent: { S: event.headers["User-Agent"] },
-    client: { S: client },
-    country: { S: event.headers["CloudFront-Viewer-Country"] },
-    // TODO any other useful info that can be gleaned?
+    id,
+    type,
+    demoSession: event.headers["X-Demo-Session"],
+    imageFilename: imageFilename || "",
+    ip: event.headers["X-Forwarded-For"].split(",")[0],
+    userAgent: event.headers["User-Agent"],
+    client,
+    country: event.headers["CloudFront-Viewer-Country"],
+    createdAt: new Date().toISOString(),
   };
 
-  // DynamoDB doesn't like null values
-  ["S", "BOOL"].forEach((type) => {
-    for (let key in item) {
-      if (
-        type in item[key] &&
-        (item[key][type] === null || item[key][type] === undefined)
-      ) {
-        delete item[key];
-      }
-    }
-  });
-
-  return db.putItem({ TableName: tableName, Item: item }).promise();
+  return db.put({ TableName: tableName, Item: item }).promise();
 };
 
 const getFileType = (encodedFile) => {
@@ -112,7 +100,7 @@ const getImageBuffer = (encodedFile) => {
  * @returns {Object} object - API Gateway Lambda Proxy Output Format
  *
  */
-exports.lambdaHandler = async (event, context) => {
+exports.lambdaHandler = async (event, _) => {
   try {
     const body = JSON.parse(event.body);
     let type = body.type;

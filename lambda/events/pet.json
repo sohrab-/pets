@@ -1,5 +1,5 @@
 {
-  "body": "{\"type\":\"cat\",\"image\":null,\"demoSession\":\"test\"}",
+  "body": "{\"type\":\"cat\",\"image\":null}",
   "resource": "/{proxy+}",
   "path": "/pets",
   "httpMethod": "POST",
@@ -15,6 +15,7 @@
     "CloudFront-Is-SmartTV-Viewer": "false",
     "CloudFront-Is-Tablet-Viewer": "false",
     "CloudFront-Viewer-Country": "US",
+    "Demo-Session": "test",
     "Host": "1234567890.execute-api.us-east-1.amazonaws.com",
     "Upgrade-Insecure-Requests": "1",
     "User-Agent": "Custom User Agent String",

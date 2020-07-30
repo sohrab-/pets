@@ -7,9 +7,8 @@ const groupByValues = {
 
 const tableName = process.env.DB_TABLE;
 
-const db = new DynamoDB.DocumentClient();
-
 const scanDynamo = async (event) => {
+  const db = new DynamoDB.DocumentClient();
   const demoSession = event.headers["Demo-Session"];
 
   let params = {

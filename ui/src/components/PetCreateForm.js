@@ -1,8 +1,36 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
-import { Box, Button } from "rebass";
-import { Label, Input } from "@rebass/forms";
+import { Box, Heading, Text, Image, Button } from "rebass";
+import { Tiles } from "@rebass/layout";
 import { useHistory } from "react-router-dom";
+
+import catImage from "../assets/cat.svg";
+import dogImage from "../assets/dog.svg";
+import hamsterImage from "../assets/hamster.svg";
+import photoUploadImage from "../assets/photo.svg";
+
+const tiles = [
+  {
+    type: "cat",
+    image: catImage,
+    name: "Cat",
+  },
+  {
+    type: "dog",
+    image: dogImage,
+    name: "Dog",
+  },
+  {
+    type: "hamster",
+    image: hamsterImage,
+    name: "Hamster",
+  },
+  {
+    type: "photo",
+    image: photoUploadImage,
+    name: "Upload Photo",
+  },
+];
 
 function getFile(file) {
   return new Promise((resolve, reject) => {
@@ -15,43 +43,65 @@ function getFile(file) {
 
 function PetCreateForm({ createPet }) {
   const history = useHistory();
-
-  const [type, setType] = useState("cat");
   const imageRef = useRef();
 
-  const onSubmit = async (event) => {
+  const onSubmit = async (type, event) => {
     event.preventDefault();
 
-    let image = null;
-    if (imageRef.current.files && imageRef.current.files[0]) {
-      image = await getFile(imageRef.current.files[0]);
+    if (type === "photo") {
+      imageRef.current.click();
+    } else {
+      // TODO handle errors
+      await createPet({ type });
+      history.push("/results");
     }
+  };
 
-    // TODO handle errors
-    await createPet({ type, image });
-    history.push("/results");
+  const onUpload = async () => {
+    if (imageRef.current.files && imageRef.current.files[0]) {
+      const image = await getFile(imageRef.current.files[0]);
+      // TODO handle errors
+      await createPet({ image });
+      history.push("/results");
+    }
   };
 
   return (
-    // TODO replace with icon buttons
-    <Box as="form" onSubmit={onSubmit} py={3}>
-      <Box width={1} px={2}>
-        <Label htmlFor="type">Type</Label>
-        <Input
-          id="type"
-          name="type"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
+    <div>
+      <Box py={4}>
+        <Heading as="h3" textAlign="center">
+          Choose your favourite pet
+        </Heading>
+        <Text textAlign="center">Or upload a photo</Text>
+      </Box>
+      <Tiles columns={[1, 2, 4]}>
+        {tiles.map(({ type, name, image }) => (
+          <Button
+            key={type}
+            variant="outline"
+            onClick={(e) => onSubmit(type, e)}
+          >
+            {/* <Card
+              sx={{
+                p: 1,
+                borderRadius: 5,
+                boxShadow: "0 0 8px rgba(0, 0, 0, .25)",
+              }}
+            > */}
+            <Image src={image} alt={name} p={50} />
+            {/* </Card> */}
+          </Button>
+        ))}
+        <input
+          type="file"
+          id="image"
+          name="image"
+          ref={imageRef}
+          onChange={onUpload}
+          hidden
         />
-      </Box>
-      <Box width={1} px={2}>
-        <Label htmlFor="image">Photo</Label>
-        <input type="file" id="image" name="image" ref={imageRef} />
-      </Box>
-      <Box px={2} ml="auto">
-        <Button>Submit</Button>
-      </Box>
-    </Box>
+      </Tiles>
+    </div>
   );
 }
 

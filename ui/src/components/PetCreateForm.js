@@ -68,7 +68,7 @@ function PetCreateForm({ createPet }) {
 
   return (
     <div>
-      <Box py={4}>
+      <Box py={4} width={1}>
         <Heading as="h3" textAlign="center">
           Choose your favourite pet
         </Heading>

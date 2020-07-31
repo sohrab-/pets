@@ -1,16 +1,22 @@
 import React from "react";
 
-import { usePets } from "../resources/pets";
+import { usePetStats } from "../resources/pets";
 import Main from "../layouts/Main";
-import PetList from "../components/PetList";
 import Spinner from "../components/Spinner";
+import PetStats from "../components/PetStats";
 
 function Results() {
-  const { data, isLoading } = usePets();
+  const { data: byType, isLoading: isLoadingType } = usePetStats('type');
+  const { data: byClient, isLoading: isLoadingClient } = usePetStats('client');
 
   return (
     <Main>
-      {isLoading ? <Spinner /> : <PetList pets={data.results || []} />}
+      {isLoadingType || isLoadingClient ? <Spinner /> : (
+        <PetStats
+          byType={byType}
+          byClient={byClient}
+        />
+      )}
     </Main>
   );
 }

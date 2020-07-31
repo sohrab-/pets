@@ -7,7 +7,7 @@ function Main({ children }) {
   return (
     <>
       <TopBar />
-      <Flex p={10} alignItems="center">
+      <Flex p={10} flexWrap="wrap" justifyContent="space-evenly">
         {children}
       </Flex>
     </>

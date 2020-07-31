@@ -1,11 +1,15 @@
 import { useQuery, useMutation, queryCache } from "react-query";
 import request from "../request";
 
-// We can swap react-query out for react-apollo-hooks, if we choose to use AppSync.
-// I chose it for its similar API.
-
-export function usePets() {
-  return useQuery("pets", () => request("pets"));
+export function usePetStats(groupBy) {
+  return useQuery(["petsStats", { groupBy }], () =>
+    request(
+      "petStats",
+      {
+        params: { groupBy }
+      }
+    )
+  );
 }
 
 export function useCreatePet() {
@@ -17,7 +21,7 @@ export function useCreatePet() {
         body: { type, image },
       },
       {
-        onSuccess: () => queryCache.invalidateQueries("pets"),
+        onSuccess: () => queryCache.invalidateQueries("petStats"),
       }
     )
   );

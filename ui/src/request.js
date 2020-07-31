@@ -15,9 +15,7 @@ export default async function request(
     method,
     headers: {
       "Content-Type": "application/json",
-      // I prefer this over sending it in the body.
-      // Can handle it consistently across requests without bodies...
-      "X-Demo-Session": process.env.REACT_APP_DEMO_SESSION,
+      "Demo-Session": process.env.REACT_APP_DEMO_SESSION,
       ...headers,
     },
     body: JSON.stringify(body),

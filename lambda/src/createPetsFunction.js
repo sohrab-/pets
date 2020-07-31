@@ -67,9 +67,11 @@ const insertIntoDynamo = async (event, id, type, imageFilename) => {
   const item = {
     id,
     type,
-    demoSession: event.headers["X-Demo-Session"],
+    demoSession: event.headers["Demo-Session"],
     imageFilename: imageFilename || "",
-    ip: event.headers["X-Forwarded-For"].split(",")[0],
+    ip: event.headers["X-Forwarded-For"]
+      ? event.headers["X-Forwarded-For"].split(",")[0]
+      : null,
     userAgent: event.headers["User-Agent"],
     client,
     country: event.headers["CloudFront-Viewer-Country"],

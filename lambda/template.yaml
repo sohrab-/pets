@@ -33,15 +33,15 @@ Resources:
     Properties:
       StageName: Prod
       Cors:
-        AllowMethods: "'OPTIONS,POST'"
+        AllowMethods: "'OPTIONS,GET,POST'"
         AllowHeaders: "'*'"
         AllowOrigin: "'*'"
 
-  PetsFunction:
+  CreatePetsFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: src/
-      Handler: app.lambdaHandler
+      Handler: createPetsFunction.lambdaHandler
       Runtime: nodejs12.x
       Environment:
         Variables:
@@ -59,6 +59,27 @@ Resources:
           Properties:
             Path: /pets
             Method: post
+            RestApiId:
+              Ref: ApiGatewayApi
+  
+  GetPetStatsFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src/
+      Handler: getPetStatsFunction.lambdaHandler
+      Runtime: nodejs12.x
+      Environment:
+        Variables:
+          DB_TABLE: !Ref TableName
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref PetsTable
+      Events:
+        Pets:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /petStats
+            Method: get
             RestApiId:
               Ref: ApiGatewayApi
 

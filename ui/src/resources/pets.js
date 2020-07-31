@@ -3,12 +3,9 @@ import request from "../request";
 
 export function usePetStats(groupBy) {
   return useQuery(["petsStats", { groupBy }], () =>
-    request(
-      "petStats",
-      {
-        params: { groupBy }
-      }
-    )
+    request("petStats", {
+      params: { groupBy },
+    })
   );
 }
 

@@ -1,15 +1,11 @@
 const { DynamoDB } = require("aws-sdk");
 
-const groupByValues = {
-  CLIENT: "client",
-  TYPE: "type",
-};
+const supportedGroupByFields = ["client", "type"];
 
 const tableName = process.env.DB_TABLE;
 
-const scanDynamo = async (event) => {
+const scanDynamo = async (demoSession) => {
   const db = new DynamoDB.DocumentClient();
-  const demoSession = event.headers["Demo-Session"];
 
   let params = {
     TableName: tableName,
@@ -55,9 +51,9 @@ exports.lambdaHandler = async (event, _) => {
     // Only run dynamodb scan if valid query param is provided
     if (
       groupByParam &&
-      Object.values(groupByValues).includes(groupByParam.toLowerCase())
+      Object.values(supportedGroupByFields).includes(groupByParam.toLowerCase())
     ) {
-      const results = await scanDynamo(event);
+      const results = await scanDynamo(event.headers["Demo-Session"]);
 
       // Group results from dynamo based on param
       const groupedResults = groupBy(results.Items, groupByParam.toLowerCase());

@@ -1,9 +1,9 @@
 "use strict";
 
-const createPetsFunction = require("../../createPetsFunction.js");
+const createPetsFunction = require("../../createPetFunction.js");
 const chai = require("chai");
 const AWS = require("aws-sdk");
-const MOCK = require("aws-sdk-mock");
+const AwsMock = require("aws-sdk-mock");
 const sinon = require("sinon");
 const expect = chai.expect;
 
@@ -11,7 +11,7 @@ let sandbox;
 let event, context;
 
 AWS.config.update({ region: "ap-southeast-2" });
-MOCK.setSDKInstance(AWS);
+AwsMock.setSDKInstance(AWS);
 
 describe("CreatePetsFunction Lambda Handler", function () {
   describe("Successful Calls", function () {
@@ -153,33 +153,33 @@ describe("CreatePetsFunction Lambda Handler", function () {
  */
 
 const restoreDynamoDB = () => {
-  MOCK.restore("DynamoDB.DocumentClient");
+  AwsMock.restore("DynamoDB.DocumentClient");
 };
 
 const restoreS3 = () => {
-  MOCK.restore("S3");
+  AwsMock.restore("S3");
 };
 
 const mockDynamoDBSuccess = () => {
-  MOCK.mock("DynamoDB.DocumentClient", "put", function (params, callback) {
+  AwsMock.mock("DynamoDB.DocumentClient", "put", function (params, callback) {
     callback(null, "successfully put item in database");
   });
 };
 
 const mockDynamoDBError = () => {
-  MOCK.mock("DynamoDB.DocumentClient", "put", function (params, callback) {
+  AwsMock.mock("DynamoDB.DocumentClient", "put", function (params, callback) {
     callback("mockError", null);
   });
 };
 
 const mockS3Success = () => {
-  MOCK.mock("S3", "putObject", function (params, callback) {
+  AwsMock.mock("S3", "putObject", function (params, callback) {
     callback(null, "successfully put item in bucket");
   });
 };
 
 const mockS3Error = () => {
-  MOCK.mock("S3", "putObject", function (params, callback) {
+  AwsMock.mock("S3", "putObject", function (params, callback) {
     callback("mockError", null);
   });
 };

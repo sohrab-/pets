@@ -31,14 +31,6 @@ const scanDynamo = async (demoSession) => {
   return db.scan(params).promise();
 };
 
-// Group Object by values of provided key
-const groupBy = (data, key) => {
-  return data.reduce((storage, item) => {
-    (storage[item[key]] = storage[item[key]] || []).push(item);
-    return storage;
-  }, {});
-};
-
 const isInt = (value) => {
   var x;
   return isNaN(value) ? !1 : ((x = parseFloat(value)), (0 | x) === x);
@@ -72,10 +64,10 @@ const timeBucketParamToSeconds = (timeBucketParam) => {
 const groupToTimeBucketArray = (items, seconds) => {
   return underscore
     .chain(items)
-    .groupBy(function (obj) {
+    .groupBy((obj) => {
       return Math.floor(+new Date(obj.createdAt) / (1000 * seconds));
     })
-    .sortBy(function (v, k) {
+    .sortBy((_, k) => {
       return k;
     })
     .value();
@@ -138,18 +130,21 @@ exports.lambdaHandler = async (event, _) => {
           };
         }
         // Only scan dynamodb if valid time query params are provided
-        const results = await scanDynamo(event.headers["Demo-Session"]);
+        results = await scanDynamo(event.headers["Demo-Session"]);
 
         const timeGoupsArray = groupToTimeBucketArray(results.Items, seconds);
         groupedResults = timeGroupsArrayToObject(timeGoupsArray, seconds);
       } else {
-        const results = await scanDynamo(event.headers["Demo-Session"]);
-        groupedResults = groupBy(results.Items, groupByParam.toLowerCase());
+        results = await scanDynamo(event.headers["Demo-Session"]);
+
+        groupedResults = underscore.groupBy(results.Items, (item) => {
+          return item[groupByParam.toLowerCase()];
+        });
 
         // Aggregate count for each group
-        Object.keys(groupedResults).map(
-          (key) => (groupedResults[key] = groupedResults[key].length)
-        );
+        groupedResults = underscore.mapObject(groupedResults, (v) => {
+          return v.length;
+        });
       }
 
       return {

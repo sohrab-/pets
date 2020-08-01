@@ -2,10 +2,15 @@ import { useQuery, useMutation, queryCache } from "react-query";
 import request from "../request";
 
 export function usePetStats(groupBy) {
-  return useQuery(["petsStats", { groupBy }], () =>
-    request("petStats", {
-      params: { groupBy },
-    })
+  return useQuery(
+    ["petsStats", { groupBy }],
+    () =>
+      request("petStats", {
+        params: { groupBy },
+      }),
+    {
+      refetchInterval: 30000,
+    }
   );
 }
 

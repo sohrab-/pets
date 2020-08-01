@@ -1,8 +1,16 @@
 const { DynamoDB } = require("aws-sdk");
+const underscore = require("underscore");
 
 const groupByValues = {
   CLIENT: "client",
   TYPE: "type",
+  TIME: "time",
+};
+
+const supportedTimeBuckets = {
+  m: 60,
+  h: 3600,
+  d: 86400,
 };
 
 const tableName = process.env.DB_TABLE;
@@ -36,6 +44,69 @@ const groupBy = (data, key) => {
   }, {});
 };
 
+const isInt = (value) => {
+  var x;
+  return isNaN(value) ? !1 : ((x = parseFloat(value)), (0 | x) === x);
+};
+
+const timeBucketParamToSeconds = (timeBucketParam) => {
+  if (timeBucketParam) {
+    const splitParam = timeBucketParam.match(/[a-zA-Z]+|[0-9]+/g);
+    if (
+      splitParam.length === 2 &&
+      isInt(splitParam[0]) &&
+      Object.keys(supportedTimeBuckets).includes(splitParam[1].toLowerCase())
+    ) {
+      return (
+        // convert to int seconds
+        parseInt(splitParam[0]) *
+        supportedTimeBuckets[splitParam[1].toLowerCase()]
+      );
+    } else {
+      throw new Error(
+        `${timeBucketParam} is not a valid \"timeBucket\" query parameter value`
+      );
+    }
+  } else {
+    throw new Error('The query parameter "timeBucket" must be provided');
+  }
+};
+
+// Group to array of results in same time bucket in sorted order
+// (Array of array of objects)
+const groupToTimeBucketArray = (items, seconds) => {
+  return underscore
+    .chain(items)
+    .groupBy(function (obj) {
+      return Math.floor(+new Date(obj.createdAt) / (1000 * seconds));
+    })
+    .sortBy(function (v, k) {
+      return k;
+    })
+    .value();
+};
+
+// Collate array into object of { 'time' : 'count' }
+const timeGroupsArrayToObject = (array, seconds) => {
+  let newGroupedObj = array.reduce((obj, item) => {
+    if (item[0].createdAt) {
+      obj[item[0].createdAt] = item.length;
+    }
+    return obj;
+  }, {});
+
+  // Rename time keys to the start time of time bucket
+  const keyValues = Object.keys(newGroupedObj).map((key) => {
+    let date = new Date(key);
+    let coeff = 1000 * seconds;
+    const newKey = new Date(
+      Math.floor(date.getTime() / coeff) * coeff
+    ).toISOString();
+    return { [newKey]: newGroupedObj[key] };
+  });
+  return Object.assign({}, ...keyValues);
+};
+
 /**
  *
  * Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
@@ -51,21 +122,40 @@ const groupBy = (data, key) => {
 exports.lambdaHandler = async (event, _) => {
   try {
     let groupByParam = event.queryStringParameters.groupBy;
+    let timeBucketParam = event.queryStringParameters.timeBucket;
 
-    // Only run dynamodb scan if valid query param is provided
+    // Check if valid groupBy params were provided
     if (
       groupByParam &&
       Object.values(groupByValues).includes(groupByParam.toLowerCase())
     ) {
-      const results = await scanDynamo(event);
+      let groupedResults;
+      let results, seconds;
 
       // Group results from dynamo based on param
-      const groupedResults = groupBy(results.Items, groupByParam.toLowerCase());
+      if (groupByParam.toLowerCase() == groupByValues.TIME) {
+        try {
+          seconds = timeBucketParamToSeconds(timeBucketParam);
+        } catch (err) {
+          return {
+            statusCode: 400,
+            body: JSON.stringify({ message: err.message }),
+          };
+        }
+        // Only scan dynamodb if valid time query params are provided
+        const results = await scanDynamo(event);
 
-      // Aggregate count for each group
-      Object.keys(groupedResults).map(
-        (key) => (groupedResults[key] = groupedResults[key].length)
-      );
+        const timeGoupsArray = groupToTimeBucketArray(results.Items, seconds);
+        groupedResults = timeGroupsArrayToObject(timeGoupsArray, seconds);
+      } else {
+        const results = await scanDynamo(event);
+        groupedResults = groupBy(results.Items, groupByParam.toLowerCase());
+
+        // Aggregate count for each group
+        Object.keys(groupedResults).map(
+          (key) => (groupedResults[key] = groupedResults[key].length)
+        );
+      }
 
       return {
         statusCode: 200,

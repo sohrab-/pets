@@ -34,11 +34,11 @@ function PetStats({
   );
 
   return (
-    <Box>
+    <Box mx={[2, 4, 4, 5]}>
       <Box mb={4}>
         <Heading>Statistics</Heading>
       </Box>
-      <Grid columns={[1, 1, 1, 2]} mx={[2, 4, 4, 5]} gap={[2, 2, 2, 4]}>
+      <Grid columns={[1, 1, 1, 2]} gap={[2, 2, 2, 4]}>
         <Card>
           <Chart
             as={Doughnut}
@@ -56,7 +56,7 @@ function PetStats({
           />
         </Card>
       </Grid>
-      <Grid columns={1} mx={[2, 4, 4, 5]} my={[2, 2, 2, 4]} gap={[2, 2, 2, 4]}>
+      <Grid columns={1} my={[2, 2, 2, 4]}>
         <Card>
           {!!Object.keys(byTime).length && (
             <Box

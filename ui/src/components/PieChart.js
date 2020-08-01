@@ -28,19 +28,19 @@ function PieChart({ data, title = null }) {
       display: !!title,
       text: title,
       fontColor: theme.colors.text,
-      fontSize: 14,
+      fontSize: theme.fontSizes[1],
       padding: 0,
     },
     legend: {
       labels: {
-        fontSize: 12,
+        fontSize: theme.fontSizes[0],
         fontColor: theme.colors.text,
       },
     },
   };
 
   return (
-    <Card bg="muted" p={[2, null, 10]}>
+    <Card bg="muted" p={[2, 2, 2, 4]}>
       {values.length ? (
         <Doughnut data={chartData} options={chartOptions} />
       ) : (

@@ -11,7 +11,7 @@ function PetStats({ byType, byClient }) {
       <Box mb={20}>
         <Heading>Statistics</Heading>
       </Box>
-      <Grid columns={[1, null, 2]} mx={[10, null, 100]} gap={[30, null, 100]}>
+      <Grid columns={[1, 1, 1, 2]} mx={[2, 4, 4, 5]} gap={[4, 4, 4, 6]}>
         <PieChart data={byType} title="Submissions by type" />
         <PieChart data={byClient} title="Submissions by client" />
       </Grid>

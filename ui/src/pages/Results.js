@@ -5,7 +5,8 @@ import Main from "../layouts/Main";
 import Spinner from "../components/Spinner";
 import PetStats from "../components/PetStats";
 
-const timeBuckets = ["30s", "60s"];
+// TODO: allow for more buckets
+const timeBuckets = ["1m", "1h", "1d"];
 
 function Results() {
   const [timeBucket, setTimeBucket] = useState(timeBuckets[0]);

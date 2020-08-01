@@ -11,7 +11,7 @@ function PetStats({ byType, byClient }) {
       <Box mb={20}>
         <Heading>Statistics</Heading>
       </Box>
-      <Grid columns={[1, null, 2]} mx={[10, null, 100]} gap={100}>
+      <Grid columns={[1, null, 2]} mx={[10, null, 100]} gap={[30, null, 100]}>
         <PieChart data={byType} title="Submissions by type" />
         <PieChart data={byClient} title="Submissions by client" />
       </Grid>
@@ -19,7 +19,7 @@ function PetStats({ byType, byClient }) {
   );
 }
 
-PieChart.propTypes = {
+PetStats.propTypes = {
   byType: PropTypes.object.isRequired,
   byClient: PropTypes.object.isRequired,
 };

@@ -27,7 +27,7 @@ function PieChart({ data, title = null }) {
   };
 
   return (
-    <Card bg="muted" p={20}>
+    <Card bg="muted" pb={[2, null, 20]}>
       {values.length ? (
         <Doughnut
           data={chartData}

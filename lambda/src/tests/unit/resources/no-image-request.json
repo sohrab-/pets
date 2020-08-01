@@ -1,0 +1,12 @@
+{
+  "body": "{\"type\":\"cat\",\"image\":null}",
+  "headers": {
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "US",
+    "Demo-Session": "test1",
+    "User-Agent": "Custom User Agent String"
+  }
+}

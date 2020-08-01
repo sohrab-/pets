@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { ThemeProvider } from "emotion-theming";
-import theme from "@rebass/preset";
+import { ThemeProvider } from "theme-ui";
+import theme from "./theme";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";

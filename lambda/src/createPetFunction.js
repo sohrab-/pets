@@ -53,7 +53,7 @@ const uploadImageToS3 = async (key, buffer) => {
 
 const insertIntoDynamo = async (id, type, imageFilename, headers) => {
   const db = new DynamoDB.DocumentClient();
-  
+
   let client = null;
   if (headers["CloudFront-Is-SmartTV-Viewer"] === "true") {
     client = "smartTV";
@@ -69,7 +69,7 @@ const insertIntoDynamo = async (id, type, imageFilename, headers) => {
     id,
     type,
     demoSession: headers["Demo-Session"],
-    imageFilename: imageFilename || "",
+    imageFilename: imageFilename || "", // so it doesn't consider the item as NULL only
     ip: headers["X-Forwarded-For"]
       ? headers["X-Forwarded-For"].split(",")[0]
       : null,

@@ -1,22 +1,22 @@
 import React from "react";
-import { Flex, Box, Link } from "rebass";
-import { Link as RouterLink } from "react-router-dom";
+import { Flex, Box, NavLink } from "theme-ui";
+import { Link } from "react-router-dom";
 import peImage from "../assets/pe.png";
 
 function TopBar() {
   return (
-    <Flex px={2} color="white" bg="black" alignItems="center">
-      <Link variant="nav" to="/" as={RouterLink}>
-        <img style={{ verticalAlign: "bottom" }} src={peImage} alt="Pe." />
+    <Flex px={2} py={2} color="white" bg="black" sx={{ alignItems: "center" }}>
+      <NavLink px={2} variant="nav" to="/" as={Link}>
+        <img style={{ verticalAlign: "text-bottom" }} src={peImage} alt="Pe." />
         &nbsp;ts
-      </Link>
+      </NavLink>
       <Box mx="auto" />
-      <Link variant="nav" to="/about" as={RouterLink}>
+      <NavLink px={2} variant="nav" to="/about" as={Link}>
         About
-      </Link>
-      <Link variant="nav" to="/results" as={RouterLink}>
+      </NavLink>
+      <NavLink px={2} variant="nav" to="/results" as={Link}>
         Results
-      </Link>
+      </NavLink>
     </Flex>
   );
 }

@@ -1,11 +1,11 @@
 import React from "react";
-import { Box } from "rebass";
-import ScaleLoader from "react-spinners/ScaleLoader";
+import { Box } from "theme-ui";
+import { Spinner as Loader } from "theme-ui";
 
 function Spinner() {
   return (
     <Box py={200}>
-      <ScaleLoader />
+      <Loader />
     </Box>
   );
 }

@@ -1,29 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, Heading } from "rebass";
+import { Box, Heading, Grid } from "theme-ui";
 
 import PieChart from "./PieChart";
 
 function PetStats({ byType, byClient }) {
   return (
-    <>
-      <Box py={4} width={1}>
-        <Heading as="h3" textAlign="center">
-          Statistics
-        </Heading>
+    <Box>
+      <Box mb={20}>
+        <Heading>Statistics</Heading>
       </Box>
-      <Box mb={4} mx={4} width={[1, 1 / 2, 1 / 3]}>
+      <Grid columns={[1, null, 2]} mx={[10, null, 100]} gap={[30, null, 100]}>
         <PieChart data={byType} title="Submissions by type" />
-      </Box>
-      <Box mb={4} mx={4} width={[1, 1 / 2, 1 / 3]}>
         <PieChart data={byClient} title="Submissions by client" />
-      </Box>
-    </>
+      </Grid>
+    </Box>
   );
 }
 
-PieChart.propTypes = {
+PetStats.propTypes = {
   byType: PropTypes.object.isRequired,
   byClient: PropTypes.object.isRequired,
 };

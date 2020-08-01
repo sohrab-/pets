@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
-import { Box, Heading, Text, Image, Button } from "rebass";
-import { Tiles } from "@rebass/layout";
+import { Box, Grid, Heading, Text, Image, Button } from "theme-ui";
 import { useHistory } from "react-router-dom";
 
 import catImage from "../assets/cat.svg";
@@ -68,39 +67,26 @@ function PetCreateForm({ createPet }) {
 
   return (
     <div>
-      <Box py={4} width={1}>
-        <Heading as="h3" textAlign="center">
-          Choose your favourite pet
-        </Heading>
-        <Text textAlign="center">Or upload a photo</Text>
+      <Box mb={20}>
+        <Heading>Choose your favourite pet</Heading>
+        <Text>Or upload a photo</Text>
       </Box>
-      <Tiles columns={[1, 2, 4]}>
+      <Grid columns={[1, 2, 4]}>
         {tiles.map(({ type, name, image }) => (
-          <Button
-            key={type}
-            variant="outline"
-            onClick={(e) => onSubmit(type, e)}
-          >
-            {/* <Card
-              sx={{
-                p: 1,
-                borderRadius: 5,
-                boxShadow: "0 0 8px rgba(0, 0, 0, .25)",
-              }}
-            > */}
-            <Image src={image} alt={name} p={50} />
-            {/* </Card> */}
+          <Button key={type} onClick={(e) => onSubmit(type, e)}>
+            <Image src={image} alt={name} p={20} />
           </Button>
         ))}
-        <input
-          type="file"
-          id="image"
-          name="image"
-          ref={imageRef}
-          onChange={onUpload}
-          hidden
-        />
-      </Tiles>
+      </Grid>
+
+      <input
+        type="file"
+        id="image"
+        name="image"
+        ref={imageRef}
+        onChange={onUpload}
+        hidden
+      />
     </div>
   );
 }

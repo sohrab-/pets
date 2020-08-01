@@ -39,6 +39,7 @@ describe("CreatePetsFunction Lambda Handler", function () {
       let response = JSON.parse(result.body);
 
       expect(response).to.be.an("object");
+      expect(response.id).to.exist;
       expect(response.type).to.be.equal("dog");
 
       sandbox.restore();
@@ -55,6 +56,7 @@ describe("CreatePetsFunction Lambda Handler", function () {
       let response = JSON.parse(result.body);
 
       expect(response).to.be.an("object");
+      expect(response.id).to.exist;
       expect(response.type).to.be.equal("cat");
     });
 
@@ -72,6 +74,7 @@ describe("CreatePetsFunction Lambda Handler", function () {
       let response = JSON.parse(result.body);
 
       expect(response).to.be.an("object");
+      expect(response.id).to.exist;
       expect(response.type).to.be.equal("dog");
 
       sandbox.restore();
@@ -90,6 +93,7 @@ describe("CreatePetsFunction Lambda Handler", function () {
       let response = JSON.parse(result.body);
 
       expect(response).to.be.an("object");
+      expect(response.id).to.exist;
       expect(response.type).to.be.equal("dog");
 
       sandbox.restore();

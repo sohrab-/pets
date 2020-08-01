@@ -37,11 +37,11 @@ Resources:
         AllowHeaders: "'*'"
         AllowOrigin: "'*'"
 
-  CreatePetsFunction:
+  CreatePetFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: src/
-      Handler: createPetsFunction.lambdaHandler
+      Handler: createPetFunction.lambdaHandler
       Runtime: nodejs12.x
       Environment:
         Variables:
@@ -54,7 +54,7 @@ Resources:
             BucketName: !Ref PetsS3Bucket
         - RekognitionDetectOnlyPolicy: {}
       Events:
-        Pets:
+        CreatePet:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /pets
@@ -75,7 +75,7 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Ref PetsTable
       Events:
-        Pets:
+        GetPetStats:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /petStats
@@ -90,9 +90,15 @@ Outputs:
   PetsApi:
     Description: "API Gateway endpoint URL for Prod stage for Pets function"
     Value: !Sub "https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/pets/"
-  PetsFunction:
-    Description: "Pets Lambda Function ARN"
-    Value: !GetAtt PetsFunction.Arn
-  PetsFunctionIamRole:
-    Description: "Implicit IAM Role created for Pets function"
-    Value: !GetAtt PetsFunctionRole.Arn
+  CreatePetFunction:
+    Description: "Create Pet Lambda Function ARN"
+    Value: !GetAtt CreatePetFunction.Arn
+  CreatePetFunctionIamRole:
+    Description: "Implicit IAM Role created for Create Pet function"
+    Value: !GetAtt CreatePetFunctionRole.Arn
+  GetPetStatsFunction:
+    Description: "Get Pet Stats Lambda Function ARN"
+    Value: !GetAtt GetPetStatsFunction.Arn
+  GetPetStatsFunctionIamRole:
+    Description: "Implicit IAM Role created for Get Pet Stats function"
+    Value: !GetAtt GetPetStatsFunctionRole.Arn

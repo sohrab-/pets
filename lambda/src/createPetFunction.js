@@ -52,29 +52,29 @@ const uploadImageToS3 = async (key, buffer) => {
   return s3.putObject(params).promise();
 };
 
-const insertIntoDynamo = async (event, id, type, imageFilename) => {
+const insertIntoDynamo = async (id, type, imageFilename, headers) => {
   let client = null;
-  if (event.headers["CloudFront-Is-SmartTV-Viewer"] === "true") {
+  if (headers["CloudFront-Is-SmartTV-Viewer"] === "true") {
     client = "smartTV";
-  } else if (event.headers["CloudFront-Is-Tablet-Viewer"] === "true") {
+  } else if (headers["CloudFront-Is-Tablet-Viewer"] === "true") {
     client = "tablet";
-  } else if (event.headers["CloudFront-Is-Mobile-Viewer"] === "true") {
+  } else if (headers["CloudFront-Is-Mobile-Viewer"] === "true") {
     client = "mobile";
-  } else if (event.headers["CloudFront-Is-Desktop-Viewer"] === "true") {
+  } else if (headers["CloudFront-Is-Desktop-Viewer"] === "true") {
     client = "desktop";
   }
 
   const item = {
     id,
     type,
-    demoSession: event.headers["Demo-Session"],
+    demoSession: headers["Demo-Session"],
     imageFilename: imageFilename || "",
-    ip: event.headers["X-Forwarded-For"]
-      ? event.headers["X-Forwarded-For"].split(",")[0]
+    ip: headers["X-Forwarded-For"]
+      ? headers["X-Forwarded-For"].split(",")[0]
       : null,
-    userAgent: event.headers["User-Agent"],
+    userAgent: headers["User-Agent"],
     client,
-    country: event.headers["CloudFront-Viewer-Country"],
+    country: headers["CloudFront-Viewer-Country"],
     createdAt: new Date().toISOString(),
   };
 
@@ -138,7 +138,7 @@ exports.lambdaHandler = async (event, _) => {
         }
       }
 
-      await insertIntoDynamo(event, id, type, imageFileName);
+      await insertIntoDynamo(id, type, imageFileName, event.headers);
 
       return {
         statusCode: 201,

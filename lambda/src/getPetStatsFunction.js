@@ -1,11 +1,7 @@
 const { DynamoDB } = require("aws-sdk");
 const underscore = require("underscore");
 
-const groupByValues = {
-  CLIENT: "client",
-  TYPE: "type",
-  TIME: "time",
-};
+const supportedGroupByFields = ["client", "type", "time"];
 
 const supportedTimeBuckets = {
   m: 60,
@@ -15,9 +11,8 @@ const supportedTimeBuckets = {
 
 const tableName = process.env.DB_TABLE;
 
-const scanDynamo = async (event) => {
+const scanDynamo = async (demoSession) => {
   const db = new DynamoDB.DocumentClient();
-  const demoSession = event.headers["Demo-Session"];
 
   let params = {
     TableName: tableName,
@@ -127,13 +122,13 @@ exports.lambdaHandler = async (event, _) => {
     // Check if valid groupBy params were provided
     if (
       groupByParam &&
-      Object.values(groupByValues).includes(groupByParam.toLowerCase())
+      Object.values(supportedGroupByFields).includes(groupByParam.toLowerCase())
     ) {
       let groupedResults;
       let results, seconds;
 
       // Group results from dynamo based on param
-      if (groupByParam.toLowerCase() == groupByValues.TIME) {
+      if (groupByParam.toLowerCase() == "time") {
         try {
           seconds = timeBucketParamToSeconds(timeBucketParam);
         } catch (err) {
@@ -143,12 +138,12 @@ exports.lambdaHandler = async (event, _) => {
           };
         }
         // Only scan dynamodb if valid time query params are provided
-        const results = await scanDynamo(event);
+        const results = await scanDynamo(event.headers["Demo-Session"]);
 
         const timeGoupsArray = groupToTimeBucketArray(results.Items, seconds);
         groupedResults = timeGroupsArrayToObject(timeGoupsArray, seconds);
       } else {
-        const results = await scanDynamo(event);
+        const results = await scanDynamo(event.headers["Demo-Session"]);
         groupedResults = groupBy(results.Items, groupByParam.toLowerCase());
 
         // Aggregate count for each group

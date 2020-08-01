@@ -6,16 +6,15 @@ import Spinner from "../components/Spinner";
 import PetStats from "../components/PetStats";
 
 function Results() {
-  const { data: byType, isLoading: isLoadingType } = usePetStats('type');
-  const { data: byClient, isLoading: isLoadingClient } = usePetStats('client');
+  const { data: byType, isLoading: isLoadingType } = usePetStats("type");
+  const { data: byClient, isLoading: isLoadingClient } = usePetStats("client");
 
   return (
     <Main>
-      {isLoadingType || isLoadingClient ? <Spinner /> : (
-        <PetStats
-          byType={byType}
-          byClient={byClient}
-        />
+      {isLoadingType || isLoadingClient ? (
+        <Spinner />
+      ) : (
+        <PetStats byType={byType} byClient={byClient} />
       )}
     </Main>
   );

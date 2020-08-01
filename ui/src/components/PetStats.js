@@ -13,11 +13,11 @@ function PetStats({ byType, byClient }) {
           Statistics
         </Heading>
       </Box>
-      <Box mb={4} mx={4} width={[1, 1/2, 1/3]}>
-        <PieChart data={byType} title="Submissions by type"/>
+      <Box mb={4} mx={4} width={[1, 1 / 2, 1 / 3]}>
+        <PieChart data={byType} title="Submissions by type" />
       </Box>
-      <Box mb={4} mx={4} width={[1, 1/2, 1/3]}>
-        <PieChart data={byClient} title="Submissions by client"/>
+      <Box mb={4} mx={4} width={[1, 1 / 2, 1 / 3]}>
+        <PieChart data={byClient} title="Submissions by client" />
       </Box>
     </>
   );
@@ -26,6 +26,6 @@ function PetStats({ byType, byClient }) {
 PieChart.propTypes = {
   byType: PropTypes.object.isRequired,
   byClient: PropTypes.object.isRequired,
-}
+};
 
 export default PetStats;

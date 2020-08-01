@@ -67,7 +67,7 @@ function PetCreateForm({ createPet }) {
 
   return (
     <div>
-      <Box mb={20}>
+      <Box mb={4}>
         <Heading>Choose your favourite pet</Heading>
         <Text>Or upload a photo</Text>
       </Box>

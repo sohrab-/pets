@@ -6,4 +6,18 @@ export default merge(deep, {
   colors: {
     visualisations: ["#003f5c", "#58508d", "#bc5090", "#ff6361", " #ffa600"],
   },
+  cards: {
+    primary: {
+      bg: "muted",
+      p: [2, 2, 2, 3],
+      position: "relative",
+    },
+  },
+  forms: {
+    select: {
+      fontSize: "12px",
+      fontWeight: "bold",
+      p: 1,
+    },
+  },
 });

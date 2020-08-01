@@ -16,8 +16,6 @@ const supportedPets = [
 const tableName = process.env.DB_TABLE;
 const bucketName = process.env.IMAGE_BUCKET;
 
-const db = new DynamoDB.DocumentClient();
-const s3 = new S3();
 const rekognition = new Rekognition();
 
 const rekognizeLabels = async (imageBytes) => {
@@ -42,6 +40,7 @@ const rekognizeModerationLabels = async (imageBytes) => {
 };
 
 const uploadImageToS3 = async (key, buffer) => {
+  const s3 = new S3();
   const params = {
     Bucket: bucketName,
     Key: key,
@@ -53,6 +52,8 @@ const uploadImageToS3 = async (key, buffer) => {
 };
 
 const insertIntoDynamo = async (id, type, imageFilename, headers) => {
+  const db = new DynamoDB.DocumentClient();
+  
   let client = null;
   if (headers["CloudFront-Is-SmartTV-Viewer"] === "true") {
     client = "smartTV";
@@ -134,7 +135,11 @@ exports.lambdaHandler = async (event, _) => {
         // Only upload image if it does not have unsafe content
         if (moderationResult.ModerationLabels.length === 0) {
           imageFileName = id + "." + getFileType(body.image);
-          await uploadImageToS3(imageFileName, imageBuffer);
+          try {
+            await uploadImageToS3(imageFileName, imageBuffer);
+          } catch {
+            imageFileName = null;
+          }
         }
       }
 

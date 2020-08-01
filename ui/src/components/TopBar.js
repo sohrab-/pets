@@ -5,22 +5,17 @@ import peImage from "../assets/pe.png";
 
 function TopBar() {
   return (
-    <Flex px={2} color="white" bg="black" alignItems="center">
-      <NavLink to="/" as={Link}>
-        {/* for some reason, sx gives a different result to style? */}
-        <img
-          src={peImage}
-          alt="Pe."
-          style={{ verticalAlign: "text-bottom", marginTop: "3px" }}
-        />
+    <Flex px={2} py={2} color="white" bg="black" sx={{ alignItems: "center" }}>
+      <NavLink px={2} variant="nav" to="/" as={Link}>
+        <img style={{ verticalAlign: "text-bottom" }} src={peImage} alt="Pe." />
         &nbsp;ts
       </NavLink>
       <Box mx="auto" />
-      <NavLink to="/results" as={Link} mr={3} pt={3}>
-        Results
-      </NavLink>
-      <NavLink to="/about" as={Link} pt={3}>
+      <NavLink px={2} variant="nav" to="/about" as={Link}>
         About
+      </NavLink>
+      <NavLink px={2} variant="nav" to="/results" as={Link}>
+        Results
       </NavLink>
     </Flex>
   );

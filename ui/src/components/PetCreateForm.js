@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
-import { Grid } from "theme-ui";
-import { Box, Heading, Text, Image, Button } from "theme-ui";
+import { Box, Grid, Heading, Text, Image, Button } from "theme-ui";
 import { useHistory } from "react-router-dom";
 
 import catImage from "../assets/cat.svg";
@@ -68,7 +67,7 @@ function PetCreateForm({ createPet }) {
 
   return (
     <div>
-      <Box py={4} width={1} sx={{ textAlign: "center" }}>
+      <Box mb={20}>
         <Heading>Choose your favourite pet</Heading>
         <Text>Or upload a photo</Text>
       </Box>

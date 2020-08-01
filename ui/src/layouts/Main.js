@@ -1,15 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Flex } from "theme-ui";
+import { Box } from "theme-ui";
 import TopBar from "../components/TopBar";
 
 function Main({ children }) {
   return (
     <>
       <TopBar />
-      <Flex p={10} flexWrap="wrap" justifyContent="space-evenly">
+      <Box p={10} sx={{ textAlign: "center" }}>
         {children}
-      </Flex>
+      </Box>
     </>
   );
 }

@@ -7,15 +7,15 @@ import PieChart from "./PieChart";
 
 function PetStats({ byType, byClient }) {
   return (
-    <div>
-      <Box py={4}>
+    <Box>
+      <Box mb={20}>
         <Heading>Statistics</Heading>
       </Box>
-      <Grid columns={[1, null, 2]}>
+      <Grid columns={[1, null, 2]} mx={[10, null, 100]} gap={100}>
         <PieChart data={byType} title="Submissions by type" />
         <PieChart data={byClient} title="Submissions by client" />
       </Grid>
-    </div>
+    </Box>
   );
 }
 

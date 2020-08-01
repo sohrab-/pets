@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { ThemeProvider } from "emotion-theming";
-import theme from "@rebass/preset";
+import { ThemeProvider } from "theme-ui";
+import { deep } from "@theme-ui/presets";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={deep}>
       <App />
     </ThemeProvider>
   </React.StrictMode>,

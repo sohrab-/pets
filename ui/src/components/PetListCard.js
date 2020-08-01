@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Card, Box, Image, Heading } from "rebass";
+import { Card, Box, Image, Heading } from "theme-ui";
 
 function PetListCard({ id, image, type }) {
   return (

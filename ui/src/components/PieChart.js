@@ -1,15 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Card } from "rebass";
-import { Pie } from "react-chartjs-2";
+import { Card } from "theme-ui";
+import { Doughnut } from "react-chartjs-2";
 
 // TODO: use good colours
-const colours = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"];
+const colours = ["#E3BA22", "#E6842A", "#137B80", "#8E6C8A", " #978F80"];
+
+const capitalise = (x) =>
+  x && x.length > 1 ? x[0].toUpperCase() + x.substring(1) : x;
 
 function PieChart({ data, title = null }) {
-  const labels = Object.keys(data);
-  const values = Object.values(data);
+  const labels = Object.keys(data).map(capitalise);
+  const values = Object.values(data).map(capitalise);
 
   const chartData = {
     datasets: [
@@ -22,8 +25,8 @@ function PieChart({ data, title = null }) {
   };
 
   return (
-    <Card sx={{ backgroundColor: "muted" }}>
-      <Pie
+    <Card>
+      <Doughnut
         data={chartData}
         options={{
           title: {

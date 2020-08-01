@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Flex } from "rebass";
+import { Flex } from "theme-ui";
 import TopBar from "../components/TopBar";
 
 function Main({ children }) {

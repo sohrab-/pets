@@ -1,22 +1,27 @@
 import React from "react";
-import { Flex, Box, Link } from "rebass";
-import { Link as RouterLink } from "react-router-dom";
+import { Flex, Box, NavLink } from "theme-ui";
+import { Link } from "react-router-dom";
 import peImage from "../assets/pe.png";
 
 function TopBar() {
   return (
     <Flex px={2} color="white" bg="black" alignItems="center">
-      <Link variant="nav" to="/" as={RouterLink}>
-        <img style={{ verticalAlign: "bottom" }} src={peImage} alt="Pe." />
+      <NavLink to="/" as={Link}>
+        {/* for some reason, sx gives a different result to style? */}
+        <img
+          src={peImage}
+          alt="Pe."
+          style={{ verticalAlign: "text-bottom", marginTop: "3px" }}
+        />
         &nbsp;ts
-      </Link>
+      </NavLink>
       <Box mx="auto" />
-      <Link variant="nav" to="/about" as={RouterLink}>
-        About
-      </Link>
-      <Link variant="nav" to="/results" as={RouterLink}>
+      <NavLink to="/results" as={Link} mr={3} pt={3}>
         Results
-      </Link>
+      </NavLink>
+      <NavLink to="/about" as={Link} pt={3}>
+        About
+      </NavLink>
     </Flex>
   );
 }

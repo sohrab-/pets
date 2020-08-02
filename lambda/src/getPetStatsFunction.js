@@ -1,7 +1,7 @@
 const { DynamoDB } = require("aws-sdk");
 const underscore = require("underscore");
 
-const supportedGroupByFields = ["client", "type", "time"];
+const supportedGroupByFields = ["client", "type", "createdAt"];
 
 const supportedTimeBuckets = {
   m: 60,
@@ -114,13 +114,13 @@ exports.lambdaHandler = async (event, _) => {
     // Check if valid groupBy params were provided
     if (
       groupByParam &&
-      Object.values(supportedGroupByFields).includes(groupByParam.toLowerCase())
+      Object.values(supportedGroupByFields).includes(groupByParam)
     ) {
       let groupedResults;
       let results, seconds;
 
       // Group results from dynamo based on param
-      if (groupByParam.toLowerCase() == "time") {
+      if (groupByParam == "createdAt") {
         try {
           seconds = timeBucketParamToSeconds(timeBucketParam);
         } catch (err) {

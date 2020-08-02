@@ -41,5 +41,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://pets.soe.dpe-au.io"
+  "proxy": "http://localhost:3000"
 }

@@ -19,10 +19,10 @@ function About() {
       <Box mb={5}>
         <Heading>About</Heading>
       </Box>
-      <Box mb={1}>
-        <Text>We're open source</Text>
+      <Box mb={3}>
+        <Text>We're open source!</Text>
       </Box>
-      <Box mb={1}>
+      <Box mb={2}>
         <NavLink href={repo}>{repo}</NavLink>
       </Box>
       <Box mb={5}>

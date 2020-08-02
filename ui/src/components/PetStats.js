@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 
-import { Card, Box, Heading, Grid, Select, useThemeUI } from "theme-ui";
+import { Card, Box, Heading, Grid, Select, useThemeUI, Alert } from "theme-ui";
 import { Doughnut, Bar } from "react-chartjs-2";
 
 import Chart from "./Chart";
@@ -38,6 +38,11 @@ function PetStats({
       <Box mb={4}>
         <Heading>Statistics</Heading>
       </Box>
+      <Alert mb={3}>
+        <em>
+          It may take up to 30 seconds for results to reflect, due to caching.
+        </em>
+      </Alert>
       <Grid columns={[1, 1, 1, 2]} gap={[2, 2, 2, 4]}>
         <Card>
           <Chart

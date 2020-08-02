@@ -31,5 +31,9 @@ export default async function request(
     ...options,
   });
 
+  if (!response.ok) {
+    throw response;
+  }
+
   return response.json();
 }

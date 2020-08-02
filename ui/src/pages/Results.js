@@ -19,15 +19,27 @@ const formatTime = (time) => moment(time).format("hh:MM:SS A");
 function Results() {
   const [timeBucket, setTimeBucket] = useState(timeBuckets[0]);
 
-  const { data: byType, isLoading: isLoadingType } = usePetStats({
+  const {
+    data: byType,
+    isLoading: isLoadingType,
+    isError: isErrorType,
+  } = usePetStats({
     groupBy: "type",
   });
 
-  const { data: byClient, isLoading: isLoadingClient } = usePetStats({
+  const {
+    data: byClient,
+    isLoading: isLoadingClient,
+    isError: isErrorClient,
+  } = usePetStats({
     groupBy: "client",
   });
 
-  const { data: byTime, isLoading: isLoadingTime } = usePetStats({
+  const {
+    data: byTime,
+    isLoading: isLoadingTime,
+    isError: isErrorTime,
+  } = usePetStats({
     groupBy: "createdAt",
     timeBucket,
   });
@@ -47,6 +59,8 @@ function Results() {
           <Card>
             {isLoadingType ? (
               <Spinner />
+            ) : isErrorType ? (
+              <Alert variant="error">Something went wrong.</Alert>
             ) : (
               <Chart
                 as={Doughnut}
@@ -59,6 +73,8 @@ function Results() {
           <Card>
             {isLoadingClient ? (
               <Spinner />
+            ) : isErrorClient ? (
+              <Alert variant="error">Something went wrong.</Alert>
             ) : (
               <Chart
                 as={Doughnut}
@@ -73,6 +89,8 @@ function Results() {
           <Card>
             {isLoadingTime ? (
               <Spinner />
+            ) : isErrorTime ? (
+              <Alert variant="error">Something went wrong.</Alert>
             ) : (
               <>
                 {!!Object.keys(byTime).length && (

@@ -25,4 +25,9 @@ export default merge(deep, {
       bg: "muted",
     },
   },
+  alerts: {
+    error: {
+      bg: "#E96245",
+    },
+  },
 });

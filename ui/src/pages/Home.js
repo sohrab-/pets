@@ -9,13 +9,16 @@ import UploadButton from "../components/UploadButton";
 
 function Home() {
   const [selectedType, setSelectedType] = useState(null);
-  const [createPet, { isLoading }] = useCreatePet();
+  const [createPet, { isLoading, isError }] = useCreatePet();
   const history = useHistory();
 
   const onSelect = async (request) => {
-    const { type } = await createPet(request);
-    // TODO handle errors
-    setSelectedType(type);
+    try {
+      const { type } = await createPet(request);
+      setSelectedType(type);
+    } catch (err) {
+      setSelectedType(null);
+    }
   };
 
   return (
@@ -39,6 +42,10 @@ function Home() {
           >
             Go to Results
           </Button>
+        </Alert>
+      ) : isError ? (
+        <Alert variant="error" mb={4}>
+          Something went wrong.
         </Alert>
       ) : null}
 

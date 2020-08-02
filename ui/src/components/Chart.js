@@ -53,10 +53,12 @@ function Chart({
 }
 
 Chart.propTypes = {
+  as: PropTypes.elementType.isRequired,
   data: PropTypes.object.isRequired,
   options: PropTypes.object,
   title: PropTypes.string,
-  as: PropTypes.elementType,
+  displayLabel: PropTypes.func,
+  displayValue: PropTypes.func,
 };
 
 export default Chart;

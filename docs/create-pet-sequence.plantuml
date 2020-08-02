@@ -1,0 +1,43 @@
+@startuml
+
+actor User
+participant API
+participant Rekognition
+database DynamoDB
+database S3
+
+User -> API: POST /pets
+
+activate API
+alt image present?
+  API -> Rekognition: DetectLabels
+  activate Rekognition
+  API <-- Rekognition: Labels
+  deactivate Rekognition
+end
+
+alt valid pet?
+  API -> Rekognition: DetectModerationLabels
+  activate Rekognition
+  API <-- Rekognition: ModerationLabels
+  deactivate Rekognition
+
+  alt SFW?
+    API -> DynamoDB: store document
+
+    alt image present?
+      API -> S3: store image
+    end
+
+    User <-- API: Pet
+  else
+    User <-- API: Bad request
+  end
+
+else
+  User <-- API: Bad request
+end
+
+deactivate API
+
+@enduml

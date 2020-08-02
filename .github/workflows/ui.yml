@@ -18,11 +18,6 @@ on:
 #   pull_request:
 #     branches: [ master ]
 
-# TODO update
-env:
-  DEMO_SESSION: ${{ github.event.inputs.demoSession || 'test' }}
-  API_BASE_URL: 'https://pets.soe.dpe-au.io'
-
 defaults:
   run:
     working-directory: ui

@@ -20,4 +20,9 @@ export default merge(deep, {
       p: 1,
     },
   },
+  buttons: {
+    primary: {
+      bg: "muted",
+    },
+  },
 });

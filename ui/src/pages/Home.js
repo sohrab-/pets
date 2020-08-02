@@ -1,16 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { Box, Grid, Heading, Text, Spinner, Alert, Button } from "theme-ui";
 
 import { useCreatePet } from "../resources/pets";
 import Main from "../layouts/Main";
-import PetCreateForm from "../components/PetCreateForm";
-import Spinner from "../components/Spinner";
+import PetButton from "../components/PetButton";
+import UploadButton from "../components/UploadButton";
 
 function Home() {
+  const [selectedType, setSelectedType] = useState(null);
   const [createPet, { isLoading }] = useCreatePet();
+  const history = useHistory();
+
+  const onSelect = async (request) => {
+    const { type } = await createPet(request);
+    // TODO handle errors
+    setSelectedType(type);
+  };
 
   return (
     <Main>
-      {isLoading ? <Spinner /> : <PetCreateForm createPet={createPet} />}
+      {isLoading ? (
+        <Box mb={2}>
+          <Spinner />
+          <Text>Sending your selection...</Text>
+        </Box>
+      ) : null}
+
+      {selectedType !== null ? (
+        <Alert mb={4}>
+          You have selected {selectedType.toUpperCase()}.
+          <Button
+            ml="auto"
+            mr={-2}
+            onClick={() => {
+              history.push("/results");
+            }}
+          >
+            Go to Results
+          </Button>
+        </Alert>
+      ) : null}
+
+      <Box mb={4}>
+        <Heading>Choose your favourite pet</Heading>
+        <Text>Or upload a photo</Text>
+      </Box>
+
+      <Grid columns={[1, 2, 4]}>
+        {["cat", "dog", "hamster"].map((pet) => (
+          <PetButton
+            key={pet}
+            type={pet}
+            disabled={isLoading}
+            onClick={(type) => {
+              onSelect({ type });
+            }}
+          />
+        ))}
+        <UploadButton
+          disabled={isLoading}
+          onFile={(image) => {
+            onSelect({ image });
+          }}
+        />
+      </Grid>
     </Main>
   );
 }

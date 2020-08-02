@@ -28,7 +28,7 @@ function Results() {
   });
 
   const { data: byTime, isLoading: isLoadingTime } = usePetStats({
-    groupBy: "time",
+    groupBy: "createdAt",
     timeBucket,
   });
 

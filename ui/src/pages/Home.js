@@ -31,7 +31,7 @@ function Home() {
       ) : null}
 
       {selectedType !== null ? (
-        <Alert mb={4}>
+        <Alert variant="success" mb={4}>
           You have selected {selectedType.toUpperCase()}.
           <Button
             ml="auto"

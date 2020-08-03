@@ -26,6 +26,12 @@ export default merge(deep, {
     },
   },
   alerts: {
+    primary: {
+      bg: "#2e3994",
+    },
+    success: {
+      bg: "#228026",
+    },
     error: {
       bg: "#E96245",
     },

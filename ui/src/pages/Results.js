@@ -66,10 +66,8 @@ function Results() {
         <Box mb={4}>
           <Heading>Statistics</Heading>
         </Box>
-        <Alert mb={3}>
-          <em>
-            It may take up to 30 seconds for results to reflect, due to caching.
-          </em>
+        <Alert variant="primary" mb={3} sx={{ fontSize: "12px" }}>
+          It may take up to 30 seconds for results to reflect, due to caching.
         </Alert>
         <Grid columns={[1, 1, 1, 2]} gap={[2, 2, 2, 4]}>
           <Card>

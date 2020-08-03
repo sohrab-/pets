@@ -24,14 +24,12 @@ const parseBucket = (timeBucket) => [
 ];
 
 const minimumTime = (times, timeBucketValue, timeBucketUnit) =>
-  times.length
-    ? moment(times.sort().slice(-1)[0])
-        .clone()
-        .subtract(
-          moment.duration(timeBucketValue, timeBucketUnit).asMilliseconds() *
-            maxBuckets
-        )
-    : 0;
+  moment(times.sort().slice(-1)[0])
+    .clone()
+    .subtract(
+      moment.duration(timeBucketValue, timeBucketUnit).asMilliseconds() *
+        maxBuckets
+    );
 
 function Results() {
   const [timeBucket, setTimeBucket] = useState(timeBuckets[0]);

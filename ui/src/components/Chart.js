@@ -16,10 +16,15 @@ function Chart({
   const labels = Object.keys(data).map(displayLabel);
   const values = Object.values(data).map(displayValue);
 
+  const palette = theme.colors.visualisations;
+  const colours = Array(labels.length)
+    .fill()
+    .map((_, i) => palette[i % palette.length]);
+
   const chartData = {
     datasets: [
       {
-        backgroundColor: theme.colors.visualisations,
+        backgroundColor: colours,
         data: values,
       },
     ],

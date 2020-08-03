@@ -4,7 +4,7 @@ import { merge } from "theme-ui";
 
 export default merge(deep, {
   colors: {
-    visualisations: ["#003f5c", "#58508d", "#bc5090", "#ff6361", " #ffa600"],
+    visualisations: ["#003f5c", "#58508d", "#bc5090", "#ff6361", "#ffa601"],
   },
   cards: {
     primary: {

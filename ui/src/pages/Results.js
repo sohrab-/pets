@@ -9,15 +9,31 @@ import Main from "../layouts/Main";
 import Chart from "../components/Chart";
 import ChartSelect from "../components/ChartSelect";
 
-const timeBuckets = ["1m", "1h", "1d"];
+// Possible time buckets to choose from
+const timeBuckets = ["1m", "5m", "10m"];
+
+// Max buckets to display on the chart
+const maxBuckets = 10;
 
 const capitalise = (x) =>
   x && x.length > 1 ? x[0].toUpperCase() + x.substring(1) : x;
 
-const formatTime = (time) => moment(time).format("hh:MM:SS A");
+const parseBucket = (timeBucket) => [
+  parseInt(timeBucket.slice(0, -1)),
+  moment.normalizeUnits(timeBucket.slice(-1)),
+];
+
+const minimumTime = (times, timeBucketValue, timeBucketUnit) =>
+  moment(times.sort().slice(-1)[0])
+    .clone()
+    .subtract(
+      moment.duration(timeBucketValue, timeBucketUnit).asMilliseconds() *
+        maxBuckets
+    );
 
 function Results() {
   const [timeBucket, setTimeBucket] = useState(timeBuckets[0]);
+  const [timeBucketValue, timeBucketUnit] = parseBucket(timeBucket);
 
   const {
     data: byType,
@@ -115,9 +131,26 @@ function Results() {
                           },
                         },
                       ],
+                      xAxes: [
+                        {
+                          offset: true,
+                          type: "time",
+                          time: {
+                            stepSize: timeBucketValue,
+                            unit: timeBucketUnit,
+                            tooltipFormat: "h:mm a",
+                          },
+                          ticks: {
+                            min: minimumTime(
+                              Object.keys(byTime),
+                              timeBucketValue,
+                              timeBucketUnit
+                            ),
+                          },
+                        },
+                      ],
                     },
                   }}
-                  displayLabel={formatTime}
                 />
               </>
             )}

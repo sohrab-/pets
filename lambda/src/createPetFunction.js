@@ -147,7 +147,7 @@ exports.lambdaHandler = async (event, _) => {
 
       return {
         statusCode: 201,
-        body: JSON.stringify({ id, type, message: "success" }),
+        body: JSON.stringify({ id ,type }),
       };
     } else {
       // bad request

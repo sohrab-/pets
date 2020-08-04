@@ -24,7 +24,6 @@ export default async function request(
     method,
     headers: {
       "Content-Type": "application/json",
-      "Demo-Session": process.env.REACT_APP_DEMO_SESSION,
       ...headers,
     },
     body: JSON.stringify(body),

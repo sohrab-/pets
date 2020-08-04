@@ -54,7 +54,7 @@ const uploadImageToS3 = async (key, buffer) => {
 const insertIntoDynamo = async (id, type, imageFilename, headers) => {
   const db = new DynamoDB.DocumentClient();
 
-  let client = null;
+  let client = "Unknown";
   if (headers["CloudFront-Is-SmartTV-Viewer"] === "true") {
     client = "smartTV";
   } else if (headers["CloudFront-Is-Tablet-Viewer"] === "true") {
@@ -147,7 +147,7 @@ exports.lambdaHandler = async (event, _) => {
 
       return {
         statusCode: 201,
-        body: JSON.stringify({ id ,type }),
+        body: JSON.stringify({ id, type }),
       };
     } else {
       // bad request

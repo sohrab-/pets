@@ -41,7 +41,6 @@ describe("CreatePetsFunction Lambda Handler", function () {
       expect(response).to.be.an("object");
       expect(response.id).to.exist;
       expect(response.type).to.be.equal("dog");
-      expect(response.message).to.be.equal("success");
 
       sandbox.restore();
     });
@@ -59,7 +58,6 @@ describe("CreatePetsFunction Lambda Handler", function () {
       expect(response).to.be.an("object");
       expect(response.id).to.exist;
       expect(response.type).to.be.equal("cat");
-      expect(response.message).to.be.equal("success");
     });
 
     it("correctly returns results even when s3 does not upload image", async () => {
@@ -78,7 +76,6 @@ describe("CreatePetsFunction Lambda Handler", function () {
       expect(response).to.be.an("object");
       expect(response.id).to.exist;
       expect(response.type).to.be.equal("dog");
-      expect(response.message).to.be.equal("success");
 
       sandbox.restore();
     });
@@ -98,7 +95,6 @@ describe("CreatePetsFunction Lambda Handler", function () {
       expect(response).to.be.an("object");
       expect(response.id).to.exist;
       expect(response.type).to.be.equal("dog");
-      expect(response.message).to.be.equal("success");
 
       sandbox.restore();
     });

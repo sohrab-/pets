@@ -7,13 +7,8 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'ui/*'
-  workflow_dispatch:
-    inputs:
-      demoSession:
-        description: 'Demo Session'
-        required: true
-        default: 'test'
+      - 'ui/**'
+  workflow_dispatch: {}
 # TODO
 #   pull_request:
 #     branches: [ master ]

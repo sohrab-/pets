@@ -7,7 +7,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'lambda/*'
+      - 'lambda/**'
   workflow_dispatch: {}
 # TODO
 #   pull_request:
@@ -39,4 +39,4 @@ jobs:
         /home/linuxbrew/.linuxbrew/bin/brew tap aws/tap
         /home/linuxbrew/.linuxbrew/bin/brew install aws-sam-cli
     - run: sam build
-    - run: sam deploy --no-confirm-changeset
+    - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset

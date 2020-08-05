@@ -126,6 +126,7 @@ function Results() {
                         {
                           ticks: {
                             beginAtZero: true,
+                            stepSize: 1,
                           },
                         },
                       ],

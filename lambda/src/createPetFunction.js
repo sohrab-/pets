@@ -7,7 +7,7 @@ const supportedPets = [
   "fish",
   "hamster",
   "mouse",
-  "parrot",
+  "bird",
   "rabbit",
   "snake",
   "turtle",

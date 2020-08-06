@@ -82,10 +82,10 @@ describe("GetPetStatsFunction Lambda Handler", function () {
       expect(Object.keys(response).length === 2);
     });
 
-    it('correctly returns results with "groupBy: time, timeBucket: 3h"', async () => {
+    it('correctly returns results with "groupBy: createdAt, timeBucket: 3h"', async () => {
       event = {
         headers: {},
-        queryStringParameters: { groupBy: "time", timeBucket: "3h" },
+        queryStringParameters: { groupBy: "createdAt", timeBucket: "3h" },
       };
 
       const result = await getPetStatsFunction.lambdaHandler(event, context);
@@ -139,8 +139,8 @@ describe("GetPetStatsFunction Lambda Handler", function () {
       );
     });
 
-    it('correctly returns 400 when "timeBucket" is not set when "groupby: time"', async () => {
-      event = { headers: {}, queryStringParameters: { groupBy: "time" } };
+    it('correctly returns 400 when "timeBucket" is not set when "groupby: createdAt"', async () => {
+      event = { headers: {}, queryStringParameters: { groupBy: "createdAt" } };
 
       const result = await getPetStatsFunction.lambdaHandler(event, context);
 
@@ -158,7 +158,7 @@ describe("GetPetStatsFunction Lambda Handler", function () {
     it('correctly returns 400 when "timeBucket" is invalid', async () => {
       event = {
         headers: {},
-        queryStringParameters: { groupBy: "time", timeBucket: "invalid" },
+        queryStringParameters: { groupBy: "createdAt", timeBucket: "invalid" },
       };
 
       const result = await getPetStatsFunction.lambdaHandler(event, context);
@@ -192,12 +192,12 @@ describe("GetPetStatsFunction Lambda Handler", function () {
       restoreDynamoDB();
     });
 
-    it("correctly returns 500 when dynamo returns an error when groupBy time", async () => {
+    it("correctly returns 500 when dynamo returns an error when groupBy createdAt", async () => {
       mockDynamoDBError();
 
       event = {
         headers: {},
-        queryStringParameters: { groupBy: "time", timeBucket: "3h" },
+        queryStringParameters: { groupBy: "createdAt", timeBucket: "3h" },
       };
 
       const result = await getPetStatsFunction.lambdaHandler(event, context);

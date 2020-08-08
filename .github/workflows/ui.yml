@@ -9,9 +9,6 @@ on:
     paths:
       - 'ui/**'
   workflow_dispatch: {}
-# TODO
-#   pull_request:
-#     branches: [ master ]
 
 defaults:
   run:

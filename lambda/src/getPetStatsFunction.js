@@ -108,16 +108,12 @@ const timeGroupsArrayToObject = (array, seconds) => {
  */
 exports.lambdaHandler = async (event, _) => {
   try {
-    let groupByParam = event.queryStringParameters.groupBy;
+    let groupByParam = event.queryStringParameters.groupBy || "type";
     let timeBucketParam = event.queryStringParameters.timeBucket;
 
     // Check if valid groupBy params were provided
-    if (
-      groupByParam &&
-      Object.values(supportedGroupByFields).includes(groupByParam)
-    ) {
-      let groupedResults;
-      let results, seconds;
+    if (Object.values(supportedGroupByFields).includes(groupByParam)) {
+      let groupedResults, results, seconds;
 
       // Group results from dynamo based on param
       if (groupByParam == "createdAt") {

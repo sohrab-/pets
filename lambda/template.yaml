@@ -32,6 +32,12 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: Prod
+      # TODO not working?
+      # DefinitionBody:
+      #   Fn::Transform:
+      #     Name: AWS::Include
+      #     Parameters:
+      #       Location: ../api/api.yaml
       Cors:
         AllowMethods: "'OPTIONS,GET,POST'"
         AllowHeaders: "'*'"

@@ -1,0 +1,112 @@
+openapi: "3.0.0"
+
+info:
+  version: "1.0.0"
+  title: Pets API v1
+
+servers:
+  - url: https://pets.soe.dpe-au.io
+
+paths:
+  /pets:
+    post:
+      summary: Create Pet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: A pet type
+                image:
+                  type: string
+                  description: Encoded pet image
+            examples:
+              type:
+                summary: Create pet by type
+                value:
+                  type: cat
+              image:
+                summary: Create pet by image
+                value:
+                  image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD/..."
+      responses:
+        '201':
+          description: Pet was successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: d211c855-7e09-4a41-a432-c2970d370f7c
+                  type:
+                    type: string
+                    example: cat
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+
+  /petStats:
+    get:
+      parameters:
+        - name: groupBy
+          in: query
+          description: Field to group the results by
+          required: true
+          schema:
+            type: string
+            enum: 
+              - type
+              - client
+              - createdAt
+        - name: timeBucket
+          in: query
+          description: How to bucket the results when `groupBy=createdAt`
+          schema:
+            type: string
+            pattern: \d+(d|h|m)
+            example: 2h
+      responses:
+        "200":
+          description: Pet stats retrieved successfully
+          content:
+            appliation/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+              examples:
+                groupByType:
+                  summary: Get count grouped by type
+                  value:
+                    cat: 12
+                    dog: 10
+                groupByClient:
+                  summary: Get count grouped by client 
+                  value:
+                    desktop: 12
+                    mobile: 4
+                groupByCreatedAt:
+                  summary: Get count over time
+                  value:
+                    "2020-06-01T14:20:00.000Z": 3
+                    "2020-06-01T14:21:00.000Z": 3
+                    "2020-06-01T14:22:00.000Z": 3
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+ 
+components:
+  responses:
+    ErrorResponse:
+      description: An error has occurred
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Something has gone terribly wrong

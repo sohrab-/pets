@@ -9,9 +9,6 @@ on:
     paths:
       - 'lambda/**'
   workflow_dispatch: {}
-# TODO
-#   pull_request:
-#     branches: [ master ]
 
 env:
   AWS_DEFAULT_REGION: ap-southeast-2

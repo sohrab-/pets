@@ -14,6 +14,9 @@ function TopBar() {
       <NavLink px={2} to="/results" as={Link}>
         Results
       </NavLink>
+      <NavLink px={2} href="/apispec.html" target="_blank">
+        API Spec
+      </NavLink>
       <NavLink px={2} to="/about" as={Link}>
         About
       </NavLink>

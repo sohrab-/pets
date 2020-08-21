@@ -38,7 +38,7 @@ function Chart({
         text: title,
         fontColor: theme.colors.text,
         fontSize: theme.fontSizes[1],
-        padding: 0,
+        padding: 10,
       },
       legend: {
         labels: {

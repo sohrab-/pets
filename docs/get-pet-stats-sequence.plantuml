@@ -1,0 +1,22 @@
+@startuml
+
+actor User
+participant API
+database DynamoDB
+
+User -> API: GET /petStats
+
+activate API
+
+API -> DynamoDB: Scan
+activate DynamoDB
+API <-- DynamoDB: Records
+deactivate DynamoDB
+
+API -> API: Aggregate
+
+User <-- API: Stats
+
+deactivate API
+
+@enduml

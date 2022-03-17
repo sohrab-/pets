@@ -101,14 +101,9 @@ Wireframes
 REST API
 ---
 
-| Operation | Request | Response
-|-----------|---------|---------
-| `POST /pets` | `{ "type": "cat" }` | `{ "id": "<UUID>", "type": "cat" }`
-| `POST /pets` | `{ "image": "<encoded image>" }` | `{ "id": "<UUID>", "type": "cat" }`
-| `GET /petStats` | `?groupBy=type` | `{ "cat": 12, "dog": 10 }`
-| `GET /petStats` | `?groupBy=client` | `{ "desktop": 5, "mobile": 23 }`
+The [api.yaml](../docs/api.yaml) REST API specification must be implemented by Lambda function and consumed by the React app.
 
-> TODO: Replace this with an OpenAPI specification
+Load the file content into [Swagger Editor](editor.swagger.io) for more information.
 
 Interactions
 ---
@@ -119,7 +114,7 @@ Interactions
 
 ### Get Stats
 
-_Coming Soon_
+![Get Pet Stats Sequence Diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/sohrab-/pets/master/docs/getpet-stats-sequence.plantuml)
 
 Technology Stack
 ===
